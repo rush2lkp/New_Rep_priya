@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priya KN — Power BI Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0C0E12; --ink2:#111418; --surface:#1A2030; --surface2:#1F2638;
+  --gold:#BF9B5A; --gold2:#D4B278; --gold3:#EDD49A;
+  --goldglow:rgba(191,155,90,0.14); --goldbdr:rgba(191,155,90,0.28); --goldbdr2:rgba(191,155,90,0.5);
+  --slate:#8A96A8; --slate2:#B0BBCC; --dim:rgba(255,255,255,0.05); --bdr:rgba(255,255,255,0.07);
+  --teal:#38B2A0; --teal-soft:rgba(56,178,160,0.1); --teal-bdr:rgba(56,178,160,0.28);
+  --cream:#F2EDE4;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;font-weight:400;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--ink)}
+::-webkit-scrollbar-thumb{background:var(--goldbdr2)}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' fill='rgba(255,255,255,0.018)'/%3E%3C/svg%3E")}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:999;height:68px;padding:0 7%;display:flex;align-items:center;justify-content:space-between;background:rgba(12,14,18,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr)}
+.n-logo{display:flex;align-items:center;gap:13px;text-decoration:none}
+.n-seal{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--goldbdr2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:0.88rem;font-weight:700;color:var(--gold);letter-spacing:0.04em;flex-shrink:0;background:radial-gradient(circle at 40% 35%,rgba(191,155,90,0.12),transparent 70%)}
+.n-text{line-height:1.25}
+.n-name{font-size:0.82rem;font-weight:600;color:var(--cream);letter-spacing:0.04em}
+.n-sub{font-size:0.65rem;font-weight:400;color:var(--slate);letter-spacing:0.1em;text-transform:uppercase}
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:1000}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--slate2);border-radius:2px;transition:all .3s}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+nav ul{display:flex;gap:32px;list-style:none;align-items:center}
+nav a{color:var(--slate);text-decoration:none;font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color .2s}
+nav a:hover{color:var(--gold2)}
+.n-hire{padding:8px 22px;border-radius:3px;border:1px solid var(--goldbdr2);color:var(--gold2)!important;background:var(--goldglow);transition:background .2s!important}
+.n-hire:hover{background:rgba(191,155,90,0.22)!important}
+
+/* HERO */
+#home{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:88px 7% 80px;overflow:hidden}
+.hero-glow{position:absolute;pointer-events:none;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(191,155,90,0.07) 0%,transparent 65%);top:-300px;right:-200px;z-index:0}
+.hero-glow2{position:absolute;pointer-events:none;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(56,178,160,0.05) 0%,transparent 65%);bottom:-100px;left:-100px;z-index:0}
+.hero-grid-lines{position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.018) 0px,rgba(255,255,255,0.018) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(0deg,rgba(255,255,255,0.018) 0px,rgba(255,255,255,0.018) 1px,transparent 1px,transparent 80px)}
+.hero-wrap{position:relative;z-index:1;max-width:1260px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 380px;gap:90px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;font-size:0.65rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .7s .1s ease forwards}
+.hero-tag-line{width:36px;height:1px;background:var(--gold)}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(3.4rem,5.5vw,5.2rem);font-weight:700;line-height:1.02;color:#fff;letter-spacing:-0.02em;margin-bottom:10px;opacity:0;animation:fadeUp .7s .18s ease forwards}
+.hero-h1 span{color:var(--gold2);font-style:italic;font-weight:400}
+.hero-divider{width:56px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin:22px 0;opacity:0;animation:fadeUp .7s .25s ease forwards}
+.hero-tagline{font-size:0.78rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:22px;opacity:0;animation:fadeUp .7s .3s ease forwards}
+.hero-desc{max-width:520px;font-size:0.93rem;color:var(--slate2);line-height:1.95;margin-bottom:40px;opacity:0;animation:fadeUp .7s .36s ease forwards}
+.hero-kpis{display:flex;gap:0;margin-bottom:44px;border:1px solid var(--bdr);border-radius:6px;overflow:hidden;opacity:0;animation:fadeUp .7s .42s ease forwards}
+.kpi{flex:1;padding:20px 24px;text-align:center;border-right:1px solid var(--bdr);background:var(--dim)}
+.kpi:last-child{border-right:none}
+.kpi-val{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:var(--gold2);line-height:1;display:block;margin-bottom:6px}
+.kpi-lbl{font-size:0.62rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--slate)}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .48s ease forwards}
+.btn-a{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:4px;background:var(--gold);color:var(--ink);font-weight:700;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:filter .2s,transform .2s}
+.btn-a:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.btn-b{display:inline-flex;align-items:center;gap:10px;padding:13px 32px;border-radius:4px;border:1px solid var(--bdr);color:var(--slate2);font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:border-color .2s,color .2s}
+.btn-b:hover{border-color:var(--goldbdr2);color:var(--gold2)}
+
+/* Portrait */
+.portrait-col{display:flex;flex-direction:column;align-items:center;opacity:0;animation:fadeUp .8s .22s ease forwards}
+.portrait-stage{position:relative;width:310px}
+.portrait-stage::before{content:'';position:absolute;inset:0;border-radius:8px;border:1px solid rgba(191,155,90,0.2);transform:translate(12px,14px);z-index:0}
+.pframe{position:relative;z-index:2;width:310px;height:370px;border-radius:6px;overflow:hidden;border:1.5px solid var(--goldbdr2);background:var(--surface)}
+.pframe img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;filter:saturate(0.88) contrast(1.05) brightness(0.97)}
+.pframe-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(12,14,18,0.55) 0%,transparent 55%)}
+.pframe-init{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:5rem;font-weight:700;color:var(--gold);background:var(--surface2)}
+.corner{position:absolute;width:20px;height:20px;z-index:3}
+.c-tl{top:-1px;left:-1px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.c-tr{top:-1px;right:-1px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)}
+.c-bl{bottom:-1px;left:-1px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)}
+.c-br{bottom:-1px;right:-1px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+.avail-chip{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;background:var(--ink2);border:1.5px solid var(--goldbdr2);padding:8px 20px;border-radius:30px;white-space:nowrap;z-index:4}
+.avail-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.avail-txt{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;color:var(--gold3);text-transform:uppercase}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:50px}
+.pbadge{font-size:0.63rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:5px 13px;border-radius:2px;background:var(--goldglow);border:1px solid var(--goldbdr);color:var(--gold2)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+.sec{position:relative;z-index:1;padding:104px 7%}
+.sec.alt{background:var(--ink2)}
+.sec-max{max-width:1260px;margin:0 auto}
+.overline{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:0.63rem;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold)}
+.overline::before{content:'';width:28px;height:1px;background:var(--gold)}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.2vw,2.75rem);font-weight:700;color:#fff;line-height:1.15;margin-bottom:60px}
+.sec-title em{font-style:italic;font-weight:400;color:var(--gold2)}
+.hr{max-width:1260px;margin:0 auto;height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent)}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:80px;align-items:start}
+.about-body{font-size:0.91rem;color:var(--slate2);line-height:2}
+.about-body p{margin-bottom:18px}
+.about-nums{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px}
+.astat{padding:22px 18px;border-radius:6px;background:var(--dim);border:1px solid var(--bdr);border-left:2px solid var(--gold);transition:border-color .2s}
+.astat:hover{border-color:var(--goldbdr2);border-left-color:var(--gold2)}
+.astat-n{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--gold2);line-height:1;display:block;margin-bottom:5px}
+.astat-l{font-size:0.67rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate)}
+.cert-stack{display:flex;flex-direction:column;gap:11px}
+.crt{display:flex;align-items:center;gap:15px;padding:15px 18px;border-radius:6px;background:var(--dim);border:1px solid var(--bdr);transition:border-color .25s,transform .25s}
+.crt:hover{border-color:var(--goldbdr2);transform:translateX(5px)}
+.crt-ico{width:36px;height:36px;flex-shrink:0;border-radius:5px;background:var(--goldglow);border:1px solid var(--goldbdr);display:flex;align-items:center;justify-content:center}
+.crt-ico svg{width:15px;height:15px;stroke:var(--gold);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.crt-name{font-size:0.83rem;font-weight:500;color:var(--cream)}
+.crt-sub{font-size:0.7rem;color:var(--slate);margin-top:2px}
+.pill{margin-left:auto;flex-shrink:0;font-size:0.62rem;font-weight:600;letter-spacing:0.08em;padding:3px 10px;border-radius:2px}
+.pill-on{background:var(--teal-soft);border:1px solid var(--teal-bdr);color:var(--teal)}
+.pill-wip{background:var(--goldglow);border:1px solid var(--goldbdr);color:var(--gold2)}
+
+/* SKILLS */
+.skill-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:18px}
+.sk{padding:28px 24px;border-radius:7px;background:var(--dim);border:1px solid var(--bdr);position:relative;overflow:hidden;transition:border-color .25s,transform .25s}
+.sk::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--gold),rgba(191,155,90,0));opacity:0;transition:opacity .25s}
+.sk:hover{border-color:var(--goldbdr);transform:translateY(-3px)}
+.sk:hover::before{opacity:1}
+.sk-icon{width:42px;height:42px;border-radius:7px;margin-bottom:18px;background:var(--goldglow);border:1px solid var(--goldbdr);display:flex;align-items:center;justify-content:center}
+.sk-icon svg{width:18px;height:18px;stroke:var(--gold);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sk-cat{font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tg{font-size:0.73rem;color:var(--slate2);padding:5px 11px;border-radius:3px;border:1px solid var(--bdr);background:rgba(255,255,255,0.03);transition:color .15s,border-color .15s}
+.tg:hover{color:var(--gold3);border-color:var(--goldbdr)}
+.tools-strip{padding:20px 26px;border-radius:7px;background:var(--dim);border:1px solid var(--bdr);display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.t-lbl{font-size:0.63rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-right:8px;flex-shrink:0}
+.tool{font-size:0.73rem;color:var(--slate2);padding:5px 14px;border-radius:20px;border:1px solid var(--goldbdr);background:var(--goldglow);transition:color .15s,background .15s}
+.tool:hover{color:var(--gold3);background:rgba(191,155,90,0.2)}
+
+/* EXPERIENCE */
+.xp-wrap{padding-left:36px;position:relative}
+.xp-wrap::before{content:'';position:absolute;left:0;top:6px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--goldbdr2) 0%,transparent 100%)}
+.xp{position:relative;margin-bottom:52px;padding:28px 32px;border-radius:8px;background:var(--dim);border:1px solid var(--bdr);transition:border-color .25s}
+.xp:hover{border-color:var(--goldbdr)}
+.xp::before{content:'';position:absolute;left:-40px;top:28px;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px var(--ink),0 0 0 5px rgba(191,155,90,0.28)}
+.xp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.xp-role{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:600;color:#fff;line-height:1.25}
+.xp-period{flex-shrink:0;font-size:0.63rem;font-weight:600;letter-spacing:0.09em;padding:5px 13px;border-radius:2px;background:var(--goldglow);border:1px solid var(--goldbdr);color:var(--gold2);white-space:nowrap}
+.xp-co{font-size:0.78rem;color:var(--slate);margin-bottom:18px}
+.xp-co strong{color:var(--slate2);font-weight:500}
+.xp-pts{list-style:none;display:flex;flex-direction:column;gap:9px}
+.xp-pts li{font-size:0.86rem;color:var(--slate2);padding-left:20px;position:relative;line-height:1.78}
+.xp-pts li::before{content:'';position:absolute;left:0;top:10px;width:6px;height:1px;background:var(--gold)}
+
+/* PROJECTS */
+.pj-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.pj{padding:36px 32px;border-radius:8px;background:var(--dim);border:1px solid var(--bdr);position:relative;overflow:hidden;transition:border-color .25s,transform .25s}
+.pj::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,rgba(56,178,160,0),var(--teal),rgba(56,178,160,0));opacity:0;transition:opacity .25s}
+.pj:hover{border-color:var(--teal-bdr);transform:translateY(-4px)}
+.pj:hover::after{opacity:1}
+.pj-type{font-size:0.62rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.pj-type::before{content:'';width:16px;height:1px;background:var(--teal)}
+.pj-title{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.3}
+.pj-org{font-size:0.73rem;color:var(--slate);margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--bdr)}
+.pj-desc{font-size:0.84rem;color:var(--slate2);line-height:1.88}
+.pj-stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--bdr)}
+.pj-tag{font-size:0.65rem;font-weight:500;letter-spacing:0.08em;padding:3px 10px;border-radius:2px;background:var(--teal-soft);border:1px solid var(--teal-bdr);color:var(--teal)}
+
+/* EDUCATION */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.edu{display:flex;gap:22px;align-items:flex-start;padding:30px 28px;border-radius:8px;background:var(--dim);border:1px solid var(--bdr);transition:border-color .25s}
+.edu:hover{border-color:var(--goldbdr)}
+.edu-icon{width:50px;height:50px;flex-shrink:0;border-radius:7px;background:var(--goldglow);border:1.5px solid var(--goldbdr);display:flex;align-items:center;justify-content:center}
+.edu-icon svg{width:20px;height:20px;stroke:var(--gold);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.edu-deg{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.3}
+.edu-sch{font-size:0.78rem;color:var(--slate2);margin-bottom:6px;line-height:1.5}
+.edu-yr{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;color:var(--gold)}
+
+/* CONTACT */
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.ct-hl{font-family:'Playfair Display',serif;font-size:clamp(2rem,3vw,2.7rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:18px}
+.ct-hl em{font-style:italic;font-weight:400;color:var(--gold2)}
+.ct-avail{display:inline-flex;align-items:center;gap:9px;padding:8px 18px;border-radius:20px;margin-bottom:22px;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.2);font-size:0.68rem;font-weight:600;letter-spacing:0.09em;color:#4ADE80}
+.ct-sub{font-size:0.88rem;color:var(--slate2);line-height:1.95;margin-bottom:32px;max-width:400px}
+.ct-links{display:flex;flex-direction:column;gap:11px}
+.ct-row{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:6px;background:var(--dim);border:1px solid var(--bdr);text-decoration:none;transition:border-color .2s,transform .2s}
+.ct-row:hover{border-color:var(--goldbdr2);transform:translateX(5px)}
+.ct-ico{width:38px;height:38px;flex-shrink:0;border-radius:4px;background:var(--goldglow);border:1px solid var(--goldbdr);display:flex;align-items:center;justify-content:center}
+.ct-ico svg{width:15px;height:15px;stroke:var(--gold);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ct-lbl{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);display:block;margin-bottom:2px}
+.ct-val{font-size:0.84rem;font-weight:500;color:var(--cream)}
+
+/* FOOTER */
+footer{position:relative;z-index:1;background:var(--ink2);border-top:1px solid var(--bdr);padding:26px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-l{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold)}
+.ft-c{font-size:0.7rem;color:var(--slate)}
+.ft-r{display:flex;gap:22px}
+.ft-r a{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);text-decoration:none;transition:color .2s}
+.ft-r a:hover{color:var(--gold2)}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero-wrap{grid-template-columns:1fr;gap:60px}
+  .portrait-col{order:-1}
+  .portrait-stage{width:240px}
+  .pframe{width:240px;height:285px}
+  .about-grid,.ct-grid{grid-template-columns:1fr;gap:48px}
+  .skill-row{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:0 5%}
+  nav ul{display:none;position:fixed;top:68px;left:0;right:0;bottom:0;background:rgba(12,14,18,0.98);backdrop-filter:blur(24px);flex-direction:column;align-items:center;justify-content:center;gap:32px;z-index:998}
+  nav ul.open{display:flex}
+  nav ul li a{font-size:1.1rem;letter-spacing:0.15em}
+  .nav-toggle{display:flex}
+  .hero-wrap{grid-template-columns:1fr;gap:50px}
+  .portrait-col{order:-1}
+  .portrait-stage{width:200px}
+  .pframe{width:200px;height:240px}
+  .badge-row{margin-top:40px}
+  .hero-kpis{flex-direction:column}
+  .kpi{border-right:none;border-bottom:1px solid var(--bdr)}
+  .kpi:last-child{border-bottom:none}
+  .hero-btns{flex-direction:column}
+  .btn-a,.btn-b{justify-content:center}
+  .sec{padding:64px 5%}
+  .sec-title{margin-bottom:40px}
+  .about-grid{grid-template-columns:1fr;gap:40px}
+  .about-nums{grid-template-columns:1fr 1fr}
+  .skill-row{grid-template-columns:1fr}
+  .xp-wrap{padding-left:20px}
+  .xp{padding:22px 18px}
+  .xp::before{left:-25px}
+  .pj-grid,.edu-grid{grid-template-columns:1fr}
+  .ct-grid{grid-template-columns:1fr;gap:44px}
+  footer{flex-direction:column;text-align:center}
+  .ft-r{flex-wrap:wrap;justify-content:center;gap:14px}
+}
+@media(max-width:480px){
+  .hero-h1{font-size:clamp(2.6rem,11vw,3.4rem)}
+  .about-nums{grid-template-columns:1fr}
+  .kpi{padding:16px 12px}
+  .kpi-val{font-size:1.7rem}
+  .pj{padding:24px 20px}
+  .edu{flex-direction:column;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="n-logo" href="#home">
+    <div class="n-seal">PK</div>
+    <div class="n-text">
+      <div class="n-name">Priya KN</div>
+      <div class="n-sub">Power BI Developer</div>
+    </div>
+  </a>
+  <ul id="nav-menu">
+    <li><a href="#about"      onclick="closeMenu()">About</a></li>
+    <li><a href="#skills"     onclick="closeMenu()">Skills</a></li>
+    <li><a href="#experience" onclick="closeMenu()">Experience</a></li>
+    <li><a href="#projects"   onclick="closeMenu()">Projects</a></li>
+    <li><a href="#education"  onclick="closeMenu()">Education</a></li>
+    <li><a href="#contact" class="n-hire" onclick="closeMenu()">Hire Me</a></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-wrap">
+    <div>
+      <div class="hero-tag"><span class="hero-tag-line"></span>Power BI Developer · Atlanta, GA</div>
+      <h1 class="hero-h1">Priya<br><span>KN</span></h1>
+      <div class="hero-divider"></div>
+      <p class="hero-tagline">Business Intelligence &nbsp;·&nbsp; Data Modeling &nbsp;·&nbsp; Power BI &nbsp;·&nbsp; Azure</p>
+      <p class="hero-desc">Power BI Developer with 5+ years of experience designing, building, and optimizing BI solutions using Power BI, Azure Data Factory, and Microsoft Fabric. Expert in DAX, data modeling, and transforming complex data into actionable insights that drive confident business decisions.</p>
+      <div class="hero-kpis">
+        <div class="kpi"><span class="kpi-val">5+</span><span class="kpi-lbl">Years Experience</span></div>
+        <div class="kpi"><span class="kpi-val">15%</span><span class="kpi-lbl">Data Accuracy ↑</span></div>
+        <div class="kpi"><span class="kpi-val">20+</span><span class="kpi-lbl">Dashboards Built</span></div>
+        <div class="kpi"><span class="kpi-val">PL-300</span><span class="kpi-lbl">Microsoft Certified</span></div>
+      </div>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-a">Get In Touch &rarr;</a>
+        <a href="#experience" class="btn-b">View Experience</a>
+      </div>
+    </div>
+
+    <div class="portrait-col">
+      <div class="portrait-stage">
+        <div class="pframe">
+          <img src="PHOTO-mine.jpg" alt="Priya KN"
+            onerror="this.style.display='none'; document.querySelector('.pframe-init').style.display='flex';">
+          <div class="pframe-init" style="display:none;">PK</div>
+          <div class="pframe-overlay"></div>
+        </div>
+        <div class="corner c-tl"></div>
+        <div class="corner c-tr"></div>
+        <div class="corner c-bl"></div>
+        <div class="corner c-br"></div>
+        <div class="avail-chip">
+          <div class="avail-dot"></div>
+          <span class="avail-txt">Open to Opportunities</span>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="pbadge">PL-300 Certified</span>
+        <span class="pbadge">Power BI Expert</span>
+        <span class="pbadge">Azure Data Factory</span>
+        <span class="pbadge">Microsoft Fabric</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div class="sec-max">
+    <div class="overline">Background</div>
+    <h2 class="sec-title">About <em>Me</em></h2>
+    <div class="about-grid">
+      <div>
+        <div class="about-body">
+          <p>Power BI Developer with strong expertise in data modeling, DAX, and dashboard development. Experienced in building scalable BI solutions across Azure, SQL Server, and cloud platforms — transforming raw, complex data into clear, business-ready insights.</p>
+          <p>I specialize in converting complex datasets into meaningful, interactive dashboards using Power BI, ensuring high data accuracy and optimized report performance. My work empowers business users at every level to make informed, confident decisions.</p>
+          <p>With hands-on experience in Azure Data Factory and Microsoft Fabric, I design end-to-end data pipelines and reporting systems that support enterprise-level analytics — from raw ingestion to polished executive dashboards.</p>
+        </div>
+        <div class="about-nums">
+          <div class="astat"><span class="astat-n">5+</span><span class="astat-l">Years Experience</span></div>
+          <div class="astat"><span class="astat-n">15%</span><span class="astat-l">Data Accuracy Improvement</span></div>
+          <div class="astat"><span class="astat-n">20+</span><span class="astat-l">Dashboards Delivered</span></div>
+          <div class="astat"><span class="astat-n">Multi</span><span class="astat-l">Data Sources Integrated</span></div>
+        </div>
+      </div>
+      <div class="cert-stack">
+        <div class="crt">
+          <div class="crt-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="crt-name">Microsoft Certified: Power BI Data Analyst</div><div class="crt-sub">PL-300 · Microsoft</div></div>
+          <span class="pill pill-on">Active</span>
+        </div>
+        <div class="crt">
+          <div class="crt-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M12 8v8"/></svg></div>
+          <div><div class="crt-name">Azure Data Factory &amp; Pipelines</div><div class="crt-sub">Microsoft Azure · Enterprise Data Engineering</div></div>
+          <span class="pill pill-on">Active</span>
+        </div>
+        <div class="crt">
+          <div class="crt-ico"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <div><div class="crt-name">Microsoft Fabric</div><div class="crt-sub">Lakehouse &amp; Warehouse · End-to-End Analytics</div></div>
+          <span class="pill pill-on">Active</span>
+        </div>
+        <div class="crt">
+          <div class="crt-ico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div><div class="crt-name">DAX &amp; Power Query (M)</div><div class="crt-sub">Advanced Calculations · Data Transformation</div></div>
+          <span class="pill pill-on">Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- SKILLS -->
+<section class="sec alt" id="skills">
+  <div class="sec-max">
+    <div class="overline">Capabilities</div>
+    <h2 class="sec-title">Core <em>Competencies</em></h2>
+    <div class="skill-row">
+      <div class="sk">
+        <div class="sk-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+        <div class="sk-cat">BI &amp; Reporting</div>
+        <div class="tags">
+          <span class="tg">Power BI Desktop</span><span class="tg">Power BI Service</span><span class="tg">Paginated Reports</span><span class="tg">KPI Dashboards</span><span class="tg">Row-Level Security</span><span class="tg">Drill-Through</span><span class="tg">Bookmarks</span>
+        </div>
+      </div>
+      <div class="sk">
+        <div class="sk-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <div class="sk-cat">Data Modeling</div>
+        <div class="tags">
+          <span class="tg">DAX</span><span class="tg">Power Query (M)</span><span class="tg">Star Schema</span><span class="tg">Snowflake Schema</span><span class="tg">YTD / MTD</span><span class="tg">SAMEPERIODLASTYEAR</span><span class="tg">Data Validation</span>
+        </div>
+      </div>
+      <div class="sk">
+        <div class="sk-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+        <div class="sk-cat">Cloud &amp; Data Engineering</div>
+        <div class="tags">
+          <span class="tg">Azure Data Factory</span><span class="tg">Azure SQL</span><span class="tg">Azure Data Lake</span><span class="tg">Microsoft Fabric</span><span class="tg">Lakehouse</span><span class="tg">Data Warehouse</span><span class="tg">ETL Pipelines</span>
+        </div>
+      </div>
+    </div>
+    <div class="tools-strip">
+      <span class="t-lbl">Tools &amp; Tech</span>
+      <span class="tool">Power BI</span><span class="tool">SQL Server</span><span class="tool">Azure</span><span class="tool">Python</span><span class="tool">Excel</span><span class="tool">GitHub</span><span class="tool">JSON</span><span class="tool">CSV</span><span class="tool">REST APIs</span>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- EXPERIENCE -->
+<section class="sec" id="experience">
+  <div class="sec-max">
+    <div class="overline">Career History</div>
+    <h2 class="sec-title">Professional <em>Experience</em></h2>
+    <div class="xp-wrap">
+
+      <div class="xp">
+        <div class="xp-header">
+          <div class="xp-role">Power BI Developer</div>
+          <span class="xp-period">Jun 2023 – Present</span>
+        </div>
+        <div class="xp-co"><strong>Techneat</strong> &nbsp;·&nbsp; Atlanta, GA</div>
+        <ul class="xp-pts">
+          <li>Led end-to-end development of enterprise Power BI dashboards, enabling data-driven decision-making across multiple business units.</li>
+          <li>Designed and implemented scalable data models using star and snowflake schemas, optimizing query performance and report load times.</li>
+          <li>Built advanced DAX calculations and Power Query (M) transformations to support complex business metrics, KPI definitions, and time intelligence.</li>
+          <li>Implemented Row-Level Security (RLS), drill-through navigation, and bookmarks to deliver tailored, interactive report experiences for varied user personas.</li>
+          <li>Integrated diverse data sources — including SQL Server, JSON, CSV, and Excel — into unified, well-governed data models.</li>
+          <li>Built and maintained data pipelines using Azure Data Factory and Azure Data Lake, ensuring reliable, timely, and accurate data delivery to reporting layers.</li>
+          <li>Worked extensively on Microsoft Fabric — Lakehouse and Warehouse — to support modern, cloud-native analytics architectures at enterprise scale.</li>
+        </ul>
+      </div>
+
+      <div class="xp">
+        <div class="xp-header">
+          <div class="xp-role">Junior Power BI Developer</div>
+          <span class="xp-period">Feb 2021 – Apr 2023</span>
+        </div>
+        <div class="xp-co"><strong>Previous Organization</strong> &nbsp;·&nbsp; India</div>
+        <ul class="xp-pts">
+          <li>Improved data accuracy by 15% through implementation of structured validation processes, QC checks, and data reconciliation workflows.</li>
+          <li>Developed interactive Power BI dashboards tailored to business user needs, translating stakeholder requirements into clear, actionable visual reporting solutions.</li>
+          <li>Built advanced DAX calculations including YTD, MTD, and SAMEPERIODLASTYEAR time intelligence measures for financial and operational reporting.</li>
+          <li>Managed Power BI Service administration — including gateway configuration, scheduled dataset refreshes, and workspace access management — ensuring high report availability.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- PROJECTS -->
+<section class="sec alt" id="projects">
+  <div class="sec-max">
+    <div class="overline">Selected Work</div>
+    <h2 class="sec-title">Key <em>Projects</em></h2>
+    <div class="pj-grid">
+      <div class="pj">
+        <div class="pj-type">Insurance Analytics · Power BI</div>
+        <h3 class="pj-title">Insurance Policy Performance Dashboard</h3>
+        <div class="pj-org">Enterprise BI Project · Techneat</div>
+        <p class="pj-desc">Built a comprehensive dashboard tracking policy sales, renewals, cancellations, and total revenue across lines of business. Developed advanced DAX measures for retention rate, customer lifetime value, and policy trend analysis — enabling leadership to monitor portfolio health and make informed underwriting decisions in real time.</p>
+        <div class="pj-stack">
+          <span class="pj-tag">Power BI</span><span class="pj-tag">DAX</span><span class="pj-tag">SQL Server</span><span class="pj-tag">Power Query</span><span class="pj-tag">Azure Data Factory</span>
+        </div>
+      </div>
+      <div class="pj">
+        <div class="pj-type">Financial Analytics · Power BI</div>
+        <h3 class="pj-title">Financial Performance Analytics Dashboard</h3>
+        <div class="pj-org">Enterprise BI Project · Techneat</div>
+        <p class="pj-desc">Created end-to-end financial dashboards tracking revenue, expenses, and profit trends with interactive KPIs and variance analysis. Integrated multiple data sources into a unified model, enabling finance stakeholders to drill into actuals vs. budget, view period-over-period comparisons, and identify cost drivers at a granular level.</p>
+        <div class="pj-stack">
+          <span class="pj-tag">Power BI</span><span class="pj-tag">DAX</span><span class="pj-tag">Star Schema</span><span class="pj-tag">Excel</span><span class="pj-tag">Azure SQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- EDUCATION -->
+<section class="sec" id="education">
+  <div class="sec-max">
+    <div class="overline">Academic Background</div>
+    <h2 class="sec-title">Education &amp; <em>Credentials</em></h2>
+    <div class="edu-grid">
+      <div class="edu">
+        <div class="edu-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <div>
+          <div class="edu-deg">Master of Science — Information Technology</div>
+          <div class="edu-sch">MKU University · India</div>
+          <div class="edu-yr">Postgraduate</div>
+        </div>
+      </div>
+      <div class="edu">
+        <div class="edu-icon"><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
+        <div>
+          <div class="edu-deg">Bachelor of Science — Computer Science</div>
+          <div class="edu-sch">MSU University · India</div>
+          <div class="edu-yr">Undergraduate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- CONTACT -->
+<section class="sec alt" id="contact">
+  <div class="sec-max">
+    <div class="ct-grid">
+      <div>
+        <div class="overline">Let's Connect</div>
+        <h2 class="ct-hl">Open to new<br><em>opportunities</em></h2>
+        <div class="ct-avail"><div class="avail-dot"></div>Available · Atlanta, GA · Open to Relocation</div>
+        <p class="ct-sub">Whether you need a Power BI Developer to build your next enterprise dashboard, architect a scalable data model, or design end-to-end Azure data pipelines — let's start a conversation.</p>
+        <a href="mailto:rush2kpwin@gmail.com" class="btn-a">Send a Message &rarr;</a>
+      </div>
+      <div class="ct-links">
+        <a class="ct-row" href="tel:6782839975">
+          <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.58 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l1.8-1.8a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><span class="ct-lbl">Phone</span><span class="ct-val">(678) 283-9975</span></div>
+        </a>
+        <a class="ct-row" href="mailto:rush2kpwin@gmail.com">
+          <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><span class="ct-lbl">Email</span><span class="ct-val">rush2kpwin@gmail.com</span></div>
+        </a>
+        <a class="ct-row" href="https://linkedin.com/in/priya-k-8a90a63b8" target="_blank">
+          <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+          <div><span class="ct-lbl">LinkedIn</span><span class="ct-val">linkedin.com/in/priya-k-8a90a63b8</span></div>
+        </a>
+        <a class="ct-row" href="https://github.com/rush2lkp" target="_blank">
+          <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+          <div><span class="ct-lbl">GitHub</span><span class="ct-val">github.com/rush2lkp</span></div>
+        </a>
+        <a class="ct-row" href="#">
+          <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><span class="ct-lbl">Location</span><span class="ct-val">Atlanta, GA — Open to Relocation</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-l">Priya KN</div>
+  <div class="ft-c">&copy; 2026 Priya KN &nbsp;·&nbsp; Power BI Developer &amp; BI Specialist</div>
+  <div class="ft-r">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu   = document.getElementById('nav-menu');
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  function closeMenu() {
+    menu.classList.remove('open');
+    toggle.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('click', e => {
+    if (!toggle.contains(e.target) && !menu.contains(e.target)) closeMenu();
+  });
+</script>
+
+</body>
+</html>
